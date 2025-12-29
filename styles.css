@@ -8,8 +8,10 @@ body {
     background-color: #1a1a1a;
 }
 
-/* Фоновое изображение + градиентный переход */
-body {
+/* ====================== ГЛАВНАЯ СТРАНИЦА (index.html) ====================== */
+
+/* Фоновое изображение только на главной, скроллится вместе с контентом */
+body:not(.wiki-page) {
     background-image: 
         linear-gradient(to bottom, 
             rgba(0, 0, 0, 0.75) 0%, 
@@ -20,11 +22,11 @@ body {
     background-size: cover;
     background-position: center top;
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-attachment: scroll; /* Фон движется при скролле */
 }
 
-/* Затемнение на всю страницу */
-body::before {
+/* Лёгкое постоянное затемнение только на главной */
+body:not(.wiki-page)::before {
     content: "";
     position: fixed;
     top: 0;
@@ -36,7 +38,27 @@ body::before {
     z-index: -1;
 }
 
-/* Главный контейнер */
+/* Плавное затемнение снизу при скролле — только на главной */
+body:not(.wiki-page)::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 300%; /* Большая высота для плавного эффекта */
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.2) 30%,
+        rgba(0, 0, 0, 0.6) 60%,
+        #1a1a1a 90%,
+        #1a1a1a 100%
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Главный контейнер — выше всех наложений */
 .container {
     display: flex;
     flex-direction: column;
@@ -50,7 +72,23 @@ body::before {
     box-sizing: border-box;
 }
 
-/* Кнопки вверху */
+/* ====================== WIKI СТРАНИЦА — ВОЗВРАЩАЕМ КАК БЫЛО ИЗНАЧАЛЬНО ====================== */
+
+body.wiki-page {
+    background-image: none !important;
+    background-color: #1a1a1a !important;
+}
+
+body.wiki-page::before {
+    background: none !important;
+}
+
+body.wiki-page::after {
+    display: none !important;
+}
+
+/* ====================== ОБЩИЕ СТИЛИ ====================== */
+
 header {
     width: 100%;
     text-align: center;
@@ -61,11 +99,10 @@ nav.nav {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 60px; /* Уменьшил с 110px — теперь помещается лучше */
+    gap: 60px;
     flex-wrap: wrap;
 }
 
-/* Стили верхних кнопок */
 .button {
     padding: 12px 24px;
     text-decoration: none;
@@ -88,7 +125,6 @@ nav.nav {
     color: white;
 }
 
-/* Лого */
 .logo {
     text-align: center;
     margin-top: 15vh;
@@ -102,7 +138,6 @@ nav.nav {
     image-rendering: pixel-art;
 }
 
-/* Текст под логотипом */
 .bottom-text {
     text-align: center;
     margin-top: 50px;
@@ -113,7 +148,6 @@ nav.nav {
     font-weight: 600;
 }
 
-/* Кнопка "Присоединиться" */
 .join-button {
     display: inline-block;
     padding: 16px 40px;
@@ -134,7 +168,6 @@ nav.nav {
     box-shadow: 0 8px 25px rgba(255, 209, 220, 0.6);
 }
 
-/* Текст с количеством котиков онлайн */
 .online-players {
     text-align: center;
     font-size: 18px;
@@ -152,7 +185,6 @@ nav.nav {
     font-weight: normal;
 }
 
-/* Заголовок "Полезное:" */
 .useful-links-title {
     text-align: center;
     font-size: 18px;
@@ -162,7 +194,6 @@ nav.nav {
     margin-bottom: 30px;
 }
 
-/* Контейнер для трёх кнопок */
 .links-buttons {
     display: flex;
     flex-direction: row;
@@ -173,7 +204,6 @@ nav.nav {
     margin-bottom: 80px;
 }
 
-/* Общий стиль кнопок */
 .link-btn {
     width: 170px;
     height: 52px;
@@ -195,20 +225,18 @@ nav.nav {
     color: #42AAFF;
 }
 
-/* Иконки — цвет меняется с текстом */
-.tg-icon, .server-icon {
+.server-icon {
     width: 28px;
     height: 28px;
     fill: currentColor;
 }
 
-/* IP-кнопка — в ряд как остальные */
 .ip-btn {
     cursor: default;
     flex-direction: row;
 }
 
-/* Адаптивность для нижних кнопок */
+/* Адаптивность */
 @media (max-width: 768px) {
     .links-buttons {
         flex-direction: column;
@@ -221,21 +249,18 @@ nav.nav {
         font-size: 15px;
     }
 
-    .tg-icon, .server-icon {
+    .server-icon {
         width: 26px;
         height: 26px;
     }
-}
 
-/* === ИСПРАВЛЕНИЕ ДЛЯ ВЕРХНЕЙ НАВИГАЦИИ НА МОБИЛЬНЫХ === */
-@media (max-width: 768px) {
     nav.nav {
-        gap: 30px; /* Ещё меньше отступ на телефонах */
-        padding: 0 20px; /* Добавил боковые отступы, чтобы не прилипало к краям */
+        gap: 30px;
+        padding: 0 20px;
     }
 
     .button {
-        font-size: 16px; /* Чуть уменьшил шрифт */
+        font-size: 16px;
         padding: 10px 20px;
     }
 }
@@ -251,16 +276,7 @@ nav.nav {
     }
 }
 
-/* ====================== WIKI LEFT MENU + CONTENT ====================== */
-
-body.wiki-page {
-    background-image: none !important;
-    background-color: #1a1a1a !important;
-}
-
-body.wiki-page::before {
-    background: none !important;
-}
+/* ====================== WIKI СТИЛИ ====================== */
 
 .wiki-wrapper {
     display: flex;
@@ -289,7 +305,6 @@ body.wiki-page::before {
     color: #42AAFF;
 }
 
-/* Левое меню — влево, в столбик */
 .wiki-nav-list {
     width: 300px;
     flex-shrink: 0;
@@ -305,7 +320,6 @@ body.wiki-page::before {
     margin-bottom: 8px;
 }
 
-/* Категории — серые */
 .category {
     color: gray;
     font-size: 20px;
@@ -314,7 +328,6 @@ body.wiki-page::before {
     cursor: default;
 }
 
-/* Подпункты и основные пункты */
 .nav-link, .sub-link {
     display: block;
     padding: 8px 0;
@@ -334,7 +347,6 @@ body.wiki-page::before {
     color: #FFD1DC;
 }
 
-/* Правая часть — контент */
 .wiki-content {
     flex: 1;
     padding: 20px;
@@ -351,28 +363,7 @@ body.wiki-page::before {
     padding: 20px;
 }
 
-/* Адаптивность wiki */
 @media (max-width: 768px) {
-    .wiki-wrapper {
-        flex-direction: column;
-    }
-
-    .back-button {
-        position: static;
-        margin-bottom: 20px;
-        text-align: center;
-        display: block;
-        width: fit-content;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .wiki-nav-list {
-        width: 100%;
-    }
-
-    .sub-link, .nav-link {
-        font-size: 17px;
-        padding-left: 10px;
-    }
+    .wiki-wrapper 
+        flex-direction:
 }

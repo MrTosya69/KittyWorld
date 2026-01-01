@@ -1,70 +1,123 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wiki | KittyWorld</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="wiki-page">
 
+    <!-- Мобильный хедер: стрелка назад + гамбургер -->
+    <div class="mobile-header">
+        <a href="index.html" class="back-button-mobile">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="white">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+            </svg>
+        </a>
+        <button class="menu-toggle" aria-label="Открыть меню">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="white">
+                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+            </svg>
+        </button>
+    </div>
+
     <div class="wiki-wrapper">
 
-        <!-- Кнопка назад -->
-        <a href="index.html" class="back-button">← На главную</a>
+        <!-- Кнопка назад только для десктопа -->
+        <a href="index.html" class="back-button-desktop">← На главную</a>
 
-        <!-- Левое меню — в столбик, влево -->
-        <nav class="wiki-nav-list">
+        <!-- Боковое меню (только десктоп) -->
+        <nav class="wiki-nav-list desktop-nav">
             <ul>
-                <li><a href="#how-to-play" class="nav-link active" data-content="test1">Как начать Играть?</a></li>
-                <li><a href="#links" class="nav-link" data-content="test2">Ссылки на нас</a></li>
+                <li><a href="#how-to-play" class="nav-link active" data-content="Как начать играть?">Как начать Играть?</a></li>
+                <li><a href="#links" class="nav-link" data-content="Ссылки на нас">Ссылки на нас</a></li>
 
                 <li class="category">Правила</li>
-                <li><a href="#rules-main" class="nav-link sub-link" data-content="test3">Основные правила</a></li>
-                <li><a href="#rules-farms" class="nav-link sub-link" data-content="test4">Правила Ферм</a></li>
-                <li><a href="#rules-mapart" class="nav-link sub-link" data-content="test5">Постройка мап-артов</a></li>
-                <li><a href="#rules-territory" class="nav-link sub-link" data-content="test6">Разметка территорий</a></li>
+                <li><a href="#rules-main" class="nav-link sub-link" data-content="Основные правила">Основные правила</a></li>
+                <li><a href="#rules-farms" class="nav-link sub-link" data-content="Правила Ферм">Правила Ферм</a></li>
+                <li><a href="#rules-mapart" class="nav-link sub-link" data-content="Постройка мап-артов">Постройка мап-артов</a></li>
+                <li><a href="#rules-territory" class="nav-link sub-link" data-content="Разметка территорий">Разметка территорий</a></li>
 
                 <li class="category">Законы</li>
-                <li><a href="#laws-main" class="nav-link sub-link" data-content="test7">Основные Законы</a></li>
-                <li><a href="#laws-target" class="nav-link sub-link" data-content="test8">Тарговные Зоны</a></li>
-                <li><a href="#laws-court" class="nav-link sub-link" data-content="test9">Судебный кодекс</a></li>
+                <li><a href="#laws-main" class="nav-link sub-link" data-content="Основные Законы">Основные Законы</a></li>
+                <li><a href="#laws-target" class="nav-link sub-link" data-content="Тарговные Зоны">Тарговные Зоны</a></li>
+                <li><a href="#laws-court" class="nav-link sub-link" data-content="Судебный кодекс">Судебный кодекс</a></li>
 
                 <li class="category">Сервер</li>
-                <li><a href="#server-general" class="nav-link sub-link" data-content="test10">Общее</a></li>
-                <li><a href="#server-chat" class="nav-link sub-link" data-content="test11">Чат</a></li>
-                <li><a href="#server-police" class="nav-link sub-link" data-content="test12">Полиция</a></li>
-                <li><a href="#server-clans" class="nav-link sub-link" data-content="test13">Кланы</a></li>
-                <li><a href="#crafts" class="nav-link sub-link" data-content="test14">Крафты</a></li>
+                <li><a href="#server-general" class="nav-link sub-link" data-content="Общее">Общее</a></li>
+                <li><a href="#server-chat" class="nav-link sub-link" data-content="Чат">Чат</a></li>
+                <li><a href="#server-police" class="nav-link sub-link" data-content="Полиция">Полиция</a></li>
+                <li><a href="#server-clans" class="nav-link sub-link" data-content="Кланы">Кланы</a></li>
+                <li><a href="#crafts" class="nav-link sub-link" data-content="Крафты">Крафты</a></li>
             </ul>
         </nav>
 
-        <!-- Правая часть — текст контента -->
+        <!-- Мобильное меню (выезжает по клику на гамбургер) -->
+        <nav class="mobile-nav" id="mobileNav">
+            <ul>
+                <li><a href="#how-to-play" class="nav-link active" data-content="Как начать играть?">Как начать Играть?</a></li>
+                <li><a href="#links" class="nav-link" data-content="Ссылки на нас">Ссылки на нас</a></li>
+
+                <li class="category">Правила</li>
+                <li><a href="#rules-main" class="nav-link sub-link" data-content="Основные правила">Основные правила</a></li>
+                <li><a href="#rules-farms" class="nav-link sub-link" data-content="Правила Ферм">Правила Ферм</a></li>
+                <li><a href="#rules-mapart" class="nav-link sub-link" data-content="Постройка мап-артов">Постройка мап-артов</a></li>
+                <li><a href="#rules-territory" class="nav-link sub-link" data-content="Разметка территорий">Разметка территорий</a></li>
+
+                <li class="category">Законы</li>
+                <li><a href="#laws-main" class="nav-link sub-link" data-content="Основные Законы">Основные Законы</a></li>
+                <li><a href="#laws-target" class="nav-link sub-link" data-content="Тарговные Зоны">Тарговные Зоны</a></li>
+                <li><a href="#laws-court" class="nav-link sub-link" data-content="Судебный кодекс">Судебный кодекс</a></li>
+
+                <li class="category">Сервер</li>
+                <li><a href="#server-general" class="nav-link sub-link" data-content="Общее">Общее</a></li>
+                <li><a href="#server-chat" class="nav-link sub-link" data-content="Чат">Чат</a></li>
+                <li><a href="#server-police" class="nav-link sub-link" data-content="Полиция">Полиция</a></li>
+                <li><a href="#server-clans" class="nav-link sub-link" data-content="Кланы">Кланы</a></li>
+                <li><a href="#crafts" class="nav-link sub-link" data-content="Крафты">Крафты</a></li>
+            </ul>
+        </nav>
+
+        <!-- Основной контент -->
         <div class="wiki-content">
             <div id="content-area">
-                test1 <!-- По умолчанию для первого пункта -->
+                Как начать играть? <!-- Текст по умолчанию -->
             </div>
         </div>
-
     </div>
 
-    <!-- JS для смены текста и подсветки -->
     <script>
         const contentArea = document.getElementById('content-area');
         const links = document.querySelectorAll('.nav-link');
+        const menuToggle = document.querySelector('.menu-toggle');
+        const mobileNav = document.getElementById('mobileNav');
 
+        // Открытие/закрытие мобильного меню
+        menuToggle.addEventListener('click', () => {
+            mobileNav.classList.toggle('open');
+        });
+
+        // Обработка кликов по пунктам меню
         links.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
 
-                // Подсветка активного
-                links.forEach(l => l.classList.remove('active'));
+                // Снимаем active со всех ссылок
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                // Добавляем текущей
                 this.classList.add('active');
 
-                // Меняем текст справа
+                // Меняем контент
                 const content = this.getAttribute('data-content');
-                contentArea.innerHTML = content;
+                contentArea.innerHTML = `<h2>${this.textContent}</h2><p>${content}</p>`; 
+                // ↑ Временно заглушка. Замени на реальный контент позже.
+
+                // На мобильных закрываем меню после выбора
+                if (window.innerWidth <= 768) {
+                    mobileNav.classList.remove('open');
+                }
             });
         });
     </script>

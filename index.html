@@ -6,8 +6,6 @@
     <title>KittyWorld</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="styles.css">
-
-    <script src="https://cdn.jsdelivr.net/gh/leonardosnt/mc-player-counter/dist/mc-player-counter.min.js"></script>
 </head>
 <body>
 
@@ -54,7 +52,7 @@
             <!-- Кликабельный IP с копированием -->
             <div class="link-btn ip-btn" id="ipCopyBtn" title="Нажми, чтобы скопировать IP">
                 <svg class="server-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 6h16v12H4V6zm16-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 12.5vv-1h8v1h-8zm0-3v-1h8v1h-8zm0-3v-1h8v1h-8z" fill="currentColor"/>
+                    <path d="M4 6h16v12H4V6zm16-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 12.5v-1h8v1h-8zm0-3v-1h8v1h-8zm0-3v-1h8v1h-8z" fill="currentColor"/>
                 </svg>
                 <span id="ipText">0.0.0.0:25565</span>
             </div>
@@ -125,27 +123,14 @@
             <h2 class="dev-wall-title">Стена Разработчиков</h2>
             <p class="dev-wall-subtitle">Вот эти Котики зовутся нашими игроками)</p>
 
-            <div class="dev-cards-row">
-                <!-- Карточка MrTosya69 -->
-                <div class="dev-card">
-                    <div class="dev-top-skins">
-                        <img src="images/dev1.png" alt="MrTosya69" class="dev-small-skin">
+            <div class="dev-carousel-wrapper">
+                <div class="dev-carousel-container">
+                    <div class="dev-carousel-track" id="devCarouselTrack">
+                        <!-- Карточки будут добавлены через JS -->
                     </div>
-                    <div class="dev-divider"></div>
-                    <p class="dev-main-text">MrTosya69</p>
-                    <p class="dev-sub-text">Главный Разраб</p>
-                </div>
-
-                <!-- Карточка Ilka09 -->
-                <div class="dev-card">
-                    <div class="dev-top-skins">
-                        <img src="images/dev2.png" alt="Ilka09" class="dev-small-skin">
-                    </div>
-                    <div class="dev-divider"></div>
-                    <p class="dev-main-text">Ilka09</p>
-                    <p class="dev-sub-text">Пиарщик, спонсор</p>
                 </div>
             </div>
+
         </div>
 
         <!-- Футер -->
@@ -239,6 +224,261 @@
                 }
             });
         }
+    </script>
+
+    <!-- JavaScript для карусели разработчиков -->
+    <script>
+    (function() {
+    const carouselData = [
+        { name: "MrTosya69", role: "Главный Разраб", image: "dev1.png" },
+        { name: "Ilka09", role: "Пиарщик, спонсор", image: "dev2.png" },
+        { name: "dimasiontitok", role: "Левая рука MrTosya69", image: "dev3.png" },
+        { name: "Dobs_Bobs", role: "Правая рука MrTosya69", image: "dev4.png" },
+        { name: "V1ski_MMA", role: "Сам по себе цирк на колёсиках", image: "dev5.png" }
+    ];
+
+    const tooltips = {
+        "Ilka09": "Поддержал проект.",
+        "dimasiontitok": "Поддержал проект.",
+        "Dobs_Bobs": "Поддержал проект.",
+        "V1ski_MMA": "Поддержал проект."
+    };
+
+    const originalLength = carouselData.length;
+    const carouselDataQuadrupled = [...carouselData, ...carouselData, ...carouselData, ...carouselData];
+
+    const track = document.getElementById('devCarouselTrack');
+    const container = document.querySelector('.dev-carousel-container');
+    
+    let currentIndex = originalLength;
+    let autoScrollInterval;
+    let isDragging = false;
+    let isAnimating = false;
+    let startX = 0;
+    let currentTranslate = 0;
+    let prevTranslate = 0;
+    let cardWidth = 240;
+    let gap = 40;
+    let slideWidth = cardWidth + gap;
+    const transitionDuration = 600;
+
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    function getSizes() {
+        const mobile = window.innerWidth <= 768;
+        cardWidth = mobile ? (window.innerWidth <= 480 ? 250 : 280) : 240;
+        gap = mobile ? 20 : 40;
+        slideWidth = cardWidth + gap;
+    }
+
+    function initCarousel() {
+        track.innerHTML = '';
+        getSizes();
+        
+        carouselDataQuadrupled.forEach((dev) => {
+            const card = document.createElement('div');
+            card.className = 'dev-card';
+            
+            let nameHtml;
+            if (dev.name === "MrTosya69") {
+                nameHtml = `<a href="https://github.com/MrTosya69" target="_blank" class="dev-name-link" rel="noopener noreferrer">${dev.name}</a>`;
+            } else {
+                nameHtml = `<span class="dev-name-tooltip" data-tooltip="${tooltips[dev.name]}">${dev.name}</span>`;
+            }
+            
+            card.innerHTML = `
+                <div class="dev-top-skins">
+                    <img src="images/${dev.image}" alt="${dev.name}" class="dev-small-skin">
+                </div>
+                <div class="dev-divider"></div>
+                <p class="dev-main-text">${nameHtml}</p>
+                <p class="dev-sub-text">${dev.role}</p>
+            `;
+            track.appendChild(card);
+        });
+        
+        setPositionByIndex(false);
+    }
+
+    function setPositionByIndex(animate = true) {
+        currentTranslate = -(currentIndex * slideWidth);
+        track.style.transform = `translateX(${currentTranslate}px)`;
+        if (animate) {
+            track.style.transition = `transform ${transitionDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+        } else {
+            track.style.transition = 'none';
+        }
+    }
+
+    function nextSlide() {
+        if (isAnimating) return;
+        isAnimating = true;
+        currentIndex += 1;
+        setPositionByIndex();
+        setTimeout(() => {
+            checkForReset();
+            isAnimating = false;
+        }, transitionDuration + 100);
+    }
+
+    function prevSlide() {
+        if (isAnimating) return;
+        isAnimating = true;
+        currentIndex -= 1;
+        setPositionByIndex();
+        setTimeout(() => {
+            checkForReset();
+            isAnimating = false;
+        }, transitionDuration + 100);
+    }
+
+    function checkForReset() {
+        let needReset = false;
+        let resetAmount = 0;
+
+        if (currentIndex >= originalLength * 3) {
+            needReset = true;
+            resetAmount = -originalLength * 2;
+        } else if (currentIndex < originalLength) {
+            needReset = true;
+            resetAmount = originalLength * 2;
+        }
+
+        if (needReset) {
+            currentIndex += resetAmount;
+            setPositionByIndex(false);
+        }
+    }
+
+    function startAutoScroll() {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = setInterval(nextSlide, 10000);
+    }
+
+    document.addEventListener('click', function(e) {
+        const target = e.target;
+        if (target.classList.contains('dev-name-tooltip') || target.classList.contains('dev-name-link')) {
+            if (target.classList.contains('dev-name-link')) {
+                e.preventDefault();
+                const href = target.href;
+                target.style.animation = 'none';
+                setTimeout(() => target.style.animation = 'shake 0.5s ease-in-out', 10);
+                setTimeout(() => {
+                    target.style.animation = '';
+                    window.open(href, '_blank');
+                }, 500);
+            } else {
+                target.style.animation = 'none';
+                setTimeout(() => target.style.animation = 'shake 0.5s ease-in-out', 10);
+                setTimeout(() => target.style.animation = '', 500);
+            }
+        }
+    });
+
+    container.addEventListener('mousedown', (e) => {
+        if (isAnimating) return;
+        getSizes();
+        isDragging = true;
+        startX = e.pageX;
+        prevTranslate = currentTranslate;
+        track.style.transition = 'none';
+        container.style.cursor = 'grabbing';
+        clearInterval(autoScrollInterval);
+        e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const diff = e.pageX - startX;
+        currentTranslate = prevTranslate + diff;
+        track.style.transform = `translateX(${currentTranslate}px)`;
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (isDragging) endDrag();
+    });
+
+    document.addEventListener('mouseleave', () => {
+        if (isDragging) endDrag();
+    });
+
+    function endDrag() {
+        isDragging = false;
+        container.style.cursor = 'grab';
+        
+        const movedBy = currentTranslate - prevTranslate;
+        const threshold = slideWidth / 3;
+        
+        isAnimating = true;
+        if (movedBy < -threshold) currentIndex += 1;
+        else if (movedBy > threshold) currentIndex -= 1;
+        
+        setPositionByIndex();
+        setTimeout(() => {
+            checkForReset();
+            isAnimating = false;
+            setTimeout(startAutoScroll, 3000);
+        }, transitionDuration + 100);
+    }
+
+    container.addEventListener('touchstart', (e) => {
+        if (isAnimating) return;
+        getSizes();
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        prevTranslate = currentTranslate;
+        track.style.transition = 'none';
+        clearInterval(autoScrollInterval);
+    }, { passive: true });
+
+    container.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        const diff = e.touches[0].clientX - startX;
+        currentTranslate = prevTranslate + diff;
+        track.style.transform = `translateX(${currentTranslate}px)`;
+    }, { passive: true });
+
+    container.addEventListener('touchend', () => {
+        if (isDragging) endDrag();
+    });
+
+    if (!isMobileDevice) {
+        container.addEventListener('wheel', (e) => {
+            if (isAnimating) return;
+
+            if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 10) {
+                return;
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            clearInterval(autoScrollInterval);
+
+            if (e.deltaY > 0) {
+                nextSlide();
+            } else if (e.deltaY < 0) {
+                prevSlide();
+            }
+
+            setTimeout(startAutoScroll, 3000);
+        }, { passive: false });
+    }
+
+    container.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
+    container.addEventListener('mouseleave', () => {
+        if (!isDragging) startAutoScroll();
+    });
+
+    window.addEventListener('resize', () => {
+        initCarousel();
+        startAutoScroll();
+    });
+
+    container.style.cursor = 'grab';
+    initCarousel();
+    startAutoScroll();
+})();
     </script>
 
 </body>
